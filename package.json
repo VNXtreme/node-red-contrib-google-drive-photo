@@ -1,0 +1,23 @@
+{
+  "name": "node-red-contrib-google-drive",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nguyen Hoang",
+  "license": "ISC",
+  "keywords": [
+    "google-drive"
+  ],
+  "node-red": {
+    "nodes": {
+      "add-photo": "src/add-photo.js"
+    }
+  },
+  "dependencies": {
+    "backoff": "^2.5.0",
+    "request": "^2.88.2"
+  }
+}

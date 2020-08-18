@@ -1,0 +1,145 @@
+<script type="text/javascript">
+  var selected1;
+  RED.nodes.registerType("addPhoto", {
+    category: "Google Drive",
+    color: "#C0DEED",
+    defaults: {
+      google: { type: "google-credentials", required: true },
+      calendarId2: { value: "" },
+      tittle: { value: "" },
+      description: { value: "" },
+      location: { value: "" },
+      time: { value: "" },
+      attend: { value: "" },
+      email1: { value: "" },
+      name1: { value: "" },
+      email2: { value: "" },
+      name2: { value: "" },
+      email3: { value: "" },
+      name3: { value: "" },
+      email4: { value: "" },
+      name4: { value: "" },
+      email5: { value: "" },
+      name5: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "google-drive.png",
+    paletteLabel: "Add Photo",
+    label: function () {
+      return this.name || "Add Photo";
+    },
+    oneditprepare: function () {
+      $('input[id="node-input-time"]').daterangepicker({
+        timePicker: true,
+        showDropdowns: true,
+        locale: {
+          format: "MM/DD/YYYY hh:mm A",
+        },
+      });
+
+      $(".drp-buttons").hide();
+      var google = $("#node-input-google").val() || "";
+      $.getJSON("cal?id=" + google, function (data) {
+        data.forEach(function (element) {
+          $("#node-input-calendarId2").append("<option value=" + element + ">" + element + "</option>");
+          if (selected1 == element) {
+            $('#node-input-calendarId2 option[value="' + selected1 + '"]').prop("selected", true);
+          }
+        });
+      });
+    },
+    oneditsave: function () {
+      selected1 = $("#node-input-calendarId2 option:selected").val();
+    },
+  });
+
+  function selectNone() {
+    document.getElementById("grpOption1").style.display = "none";
+    document.getElementById("grpOption2").style.display = "none";
+    document.getElementById("grpOption3").style.display = "none";
+    document.getElementById("grpOption4").style.display = "none";
+    document.getElementById("grpOption5").style.display = "none";
+  }
+
+  function selectAttendPerson(nameSelect) {
+    if (nameSelect) {
+      switch (parseInt(nameSelect.value)) {
+        case 0:
+          selectNone();
+          break;
+        case 1:
+          selectNone();
+          document.getElementById("grpOption1").style.display = "block";
+          break;
+        case 2:
+          selectNone();
+          document.getElementById("grpOption1").style.display = "block";
+          document.getElementById("grpOption2").style.display = "block";
+          break;
+        case 3:
+          selectNone();
+          document.getElementById("grpOption1").style.display = "block";
+          document.getElementById("grpOption2").style.display = "block";
+          document.getElementById("grpOption3").style.display = "block";
+          break;
+        case 4:
+          selectNone();
+          document.getElementById("grpOption1").style.display = "block";
+          document.getElementById("grpOption2").style.display = "block";
+          document.getElementById("grpOption3").style.display = "block";
+          document.getElementById("grpOption4").style.display = "block";
+          break;
+        case 5:
+          selectNone();
+          document.getElementById("grpOption1").style.display = "block";
+          document.getElementById("grpOption2").style.display = "block";
+          document.getElementById("grpOption3").style.display = "block";
+          document.getElementById("grpOption4").style.display = "block";
+          document.getElementById("grpOption5").style.display = "block";
+          break;
+        default:
+          selectNone();
+          break;
+      }
+    } else {
+      selectNone();
+    }
+  }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+<script type="text/x-red" data-template-name="addPhoto">
+  <div class="form-row">
+  		<label for="node-input-google"><i class="fa fa-user"></i> Google</label>
+  		<input type="text" id="node-input-google">
+  </div>
+  <div class="form-row">
+  		<label for="node-input-tittle"><i class="fa fa-bookmark"></i> Tittle</label>
+  		<input type="text" id="node-input-tittle" placeholder="Tittle">
+  </div>
+  <div class="form-row">
+  		<label for="node-input-description"><i class="fa fa-align-justify"></i> Description </label>
+  		<input type="text" id="node-input-description" placeholder="Description">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="addPhoto">
+  <p>Send a message every time an event occurs in a <a href="https://www.google.com/calendar">Google Calendar</a>.</p>
+  <p>The incoming message can provide the following properties:
+  		<ul>
+  				<li><b>Calendar</b> - the summary string from the calendar entry</li>
+  				<li><b>title</b> - the summary string from the calendar entry</li>
+  				<li><b>description</b> - the description from the calendar entry</li>
+  				<li><b>location</b> - the location string from the calendar entry</li>
+  				<li><b>start</b> - date of start time</li>
+  				<li><b>end</b> - date of end time</li>
+  		</ul>
+  </p>
+  <p>The message sent from the node will have properties:
+  		<ul>
+  			<li><b>payload</b> - Success/Error</li>
+  		</ul>
+  	</p>
+</script>
